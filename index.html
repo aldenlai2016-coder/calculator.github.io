@@ -1,117 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Simple Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
 
-    .calculator {
-      background: #222;
-      padding: 20px;
-      border-radius: 12px;
-      width: 260px;
-    }
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #121212;
+            font-family: Arial, sans-serif;
+        }
 
-    #display {
-      width: 100%;
-      height: 50px;
-      font-size: 22px;
-      margin-bottom: 10px;
-      text-align: right;
-      padding: 5px;
-    }
+        .calculator {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 15px;
+            width: 320px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
 
-    .buttons {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
+        #display {
+            width: 100%;
+            height: 60px;
+            font-size: 28px;
+            text-align: right;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            background: #2a2a2a;
+            color: white;
+        }
 
-    button {
-      padding: 15px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #333;
-      color: white;
-    }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
 
-    button:hover {
-      background: #555;
-    }
+        button {
+            height: 60px;
+            font-size: 22px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #333;
+            color: white;
+            transition: 0.2s;
+        }
 
-    .equal {
-      background: #4caf50;
-    }
+        button:hover {
+            background: #555;
+        }
 
-    .clear {
-      background: #e74c3c;
-    }
-  </style>
+        .operator {
+            background: #ff9500;
+        }
+
+        .operator:hover {
+            background: #ffb347;
+        }
+
+        .equal {
+            background: #28a745;
+        }
+
+        .equal:hover {
+            background: #34d058;
+        }
+
+        .clear {
+            background: #dc3545;
+            grid-column: span 4;
+        }
+
+        .clear:hover {
+            background: #ff4d5e;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="calculator">
-    <input type="text" id="display" disabled />
+<div class="calculator">
+    <input type="text" id="display" readonly>
 
     <div class="buttons">
-      <button onclick="append('7')">7</button>
-      <button onclick="append('8')">8</button>
-      <button onclick="append('9')">9</button>
-      <button onclick="append('/')">÷</button>
+        <button onclick="append('7')">7</button>
+        <button onclick="append('8')">8</button>
+        <button onclick="append('9')">9</button>
+        <button class="operator" onclick="append('/')">÷</button>
 
-      <button onclick="append('4')">4</button>
-      <button onclick="append('5')">5</button>
-      <button onclick="append('6')">6</button>
-      <button onclick="append('*')">×</button>
+        <button onclick="append('4')">4</button>
+        <button onclick="append('5')">5</button>
+        <button onclick="append('6')">6</button>
+        <button class="operator" onclick="append('*')">×</button>
 
-      <button onclick="append('1')">1</button>
-      <button onclick="append('2')">2</button>
-      <button onclick="append('3')">3</button>
-      <button onclick="append('-')">−</button>
+        <button onclick="append('1')">1</button>
+        <button onclick="append('2')">2</button>
+        <button onclick="append('3')">3</button>
+        <button class="operator" onclick="append('-')">−</button>
 
-      <button onclick="append('0')">0</button>
-      <button onclick="append('.')">.</button>
-      <button class="equal" onclick="calculate()">=</button>
-      <button onclick="append('+')">+</button>
+        <button onclick="append('0')">0</button>
+        <button onclick="append('.')">.</button>
+        <button onclick="toggleNegative()">±</button>
+        <button class="operator" onclick="append('+')">+</button>
 
-      <button class="clear" onclick="clearDisplay()" style="grid-column: span 4;">
-        Clear
-      </button>
+        <button class="equal" onclick="calculate()">=</button>
+        <button onclick="backspace()">⌫</button>
+        <button onclick="append('(')">(</button>
+        <button onclick="append(')')">)</button>
+
+        <button class="clear" onclick="clearDisplay()">Clear</button>
     </div>
-  </div>
+</div>
 
-  <script>
-    let display = document.getElementById("display");
+<script>
+    const display = document.getElementById("display");
 
     function append(value) {
-      display.value += value;
+        display.value += value;
     }
 
     function clearDisplay() {
-      display.value = "";
+        display.value = "";
+    }
+
+    function backspace() {
+        display.value = display.value.slice(0, -1);
+    }
+
+    function toggleNegative() {
+        if (display.value === "") {
+            display.value = "-";
+        } else if (display.value.startsWith("-")) {
+            display.value = display.value.substring(1);
+        } else {
+            display.value = "-" + display.value;
+        }
     }
 
     function calculate() {
-      try {
-        display.value = eval(display.value);
-      } catch {
-        display.value = "Error";
-      }
+        try {
+            display.value = eval(display.value);
+        } catch {
+            display.value = "Error";
+        }
     }
-  </script>
+</script>
 
 </body>
 </html>
